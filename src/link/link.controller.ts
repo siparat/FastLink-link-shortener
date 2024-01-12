@@ -29,7 +29,7 @@ export class LinkController {
 		const path = await this.linkService.createShortLink(url);
 		const domain = this.configService.get('DOMAIN');
 
-		return { path, url: `${domain}/${path}` };
+		return { path, url: `${domain}/link/${path}` };
 	}
 
 	@Get(':path')
