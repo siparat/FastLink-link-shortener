@@ -1,32 +1,38 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { randomBytes } from 'crypto';
-import { LINKS, LinkTypes } from './link.constants';
+import { LINKS, LinkErrorMessages, LinkTypes } from './link.constants';
 
 @Injectable()
 export class LinkService {
 	constructor(@Inject(LinkTypes.MAP) private paths: typeof LINKS) {}
 
 	getUrlByPath(path: string): string {
-		return this.paths.get(path);
+		const url = this.paths.get(path);
+		if (!url) {
+			throw new NotFoundException(LinkErrorMessages.NOT_FOUND_BY_PATH);
+		}
+		return url;
 	}
 
-	async createShortLink(url: string): Promise<string> {
-		const path = await this.getUniqueKey();
+	async createShortLink(url: string, lengthPath: number = 10): Promise<string> {
+		const path = await this.getUniqueKey(lengthPath);
 		this.paths.set(path, url);
 		return path;
 	}
 
-	private async getUniqueKey(): Promise<string> {
-		let path: string = this.generateString();
+	private async getUniqueKey(length: number): Promise<string> {
+		let path: string = this.generateString(length);
 		let uniquePath: boolean = !this.paths.has(path);
 		while (!uniquePath) {
-			path = this.generateString();
+			path = this.generateString(length);
 			uniquePath = this.paths.has(path);
 		}
 		return path;
 	}
 
-	private generateString(): string {
-		return randomBytes(3).toString('hex');
+	private generateString(length: number): string {
+		return randomBytes(Math.ceil(length / 2))
+			.toString('hex')
+			.slice(0, length);
 	}
 }
