@@ -39,7 +39,7 @@ export class LinkController {
 		path = caseString == 'upper' ? path.toUpperCase() : path;
 		const domain = this.configService.get('DOMAIN');
 
-		return { path, url: `${domain}/${path}` };
+		return { path, url: `${domain}/link/${path}` };
 	}
 
 	@Get(':path')
