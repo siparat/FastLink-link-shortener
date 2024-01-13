@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Вы переходите по ссылке</title>
+</head>
+<body>
+	<p>Вы собираетесь перейти по ссылке</p>
+	<a href="{{ url }}">{{ url }}</a>
+	<div id="wrapper">
+		<button><a href="{{ url }}">Перейти</a></button>
+	</div>
+	<script>
+		window.navigation.canGoBack && (
+			const btn = document.createElement('button')
+			btn.onclick = () => {
+					window.navigation.back()
+				}
+			btn.innerText = 'Вернуться'
+			document.getElementById('wrapper').appendChild(btn)
+		)
+	</script>
+</body>
+</html>
