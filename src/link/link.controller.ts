@@ -21,9 +21,6 @@ export class LinkController {
 		@Query('length', new DefaultValuePipe(10), new LimitPipe(6, 25))
 		length: number
 	): Promise<CreateLinkResponse> {
-		if (!url || typeof url !== 'string') {
-			throw new BadRequestException(LinkErrorMessages.NO_URL);
-		}
 		let path = await this.linkService.createShortLink(url, length);
 		path = caseString == 'upper' ? path.toUpperCase() : path;
 		const domain = this.configService.get('DOMAIN');
