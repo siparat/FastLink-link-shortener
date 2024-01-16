@@ -1,8 +1,9 @@
-export interface CreateLinkResponse {
-	url: string;
-	path: string;
+import { Link } from '@prisma/client';
+
+export interface CreateLinkResponse extends Link {
+	shortUrl: string;
 }
 
-export interface GetTemplateResponse {
-	url: string;
+export interface RedirectLinkResponse extends Link {
+	author: { username: string };
 }

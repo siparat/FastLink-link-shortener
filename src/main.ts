@@ -5,8 +5,11 @@ import { join } from 'path';
 
 async function bootstrap(): Promise<void> {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
-	app.setBaseViewsDir(join(process.cwd(), './src/', './templates'));
-	app.setViewEngine('hbs');
+	app
+		.setViewEngine('hbs')
+		.useStaticAssets(join(process.cwd(), './src/', './templates/', './public'))
+		.setBaseViewsDir(join(process.cwd(), './src/', './templates'))
+		.enableCors();
 	await app.listen(3000);
 }
 bootstrap();

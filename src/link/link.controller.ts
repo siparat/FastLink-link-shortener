@@ -9,7 +9,7 @@ import {
 	Render,
 	UseGuards
 } from '@nestjs/common';
-import { CreateLinkResponse, GetTemplateResponse } from './link.responses';
+import { CreateLinkResponse } from './link.responses';
 import { LinkService } from './link.service';
 import { ConfigService } from '@nestjs/config';
 import { LinkErrorMessages } from './link.constants';
@@ -17,6 +17,9 @@ import { LimitPipe } from 'src/pipes/limit.pipe';
 import { ParseUrlPipe } from './pipes/parse-url.pipe';
 import { ParseCasePipe } from './pipes/parse-case.pipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Link } from '@prisma/client';
+import { UserEmail } from 'src/auth/decorators/user-email.decorator';
+import { CreateShortLinkOptions } from './link.interfaces';
 
 @Controller('link')
 export class LinkController {
@@ -28,24 +31,23 @@ export class LinkController {
 	@UseGuards(JwtAuthGuard)
 	@Post('create')
 	async create(
+		@UserEmail() email: string,
 		@Query('url', ParseUrlPipe) url: string,
-		@Query('case', ParseCasePipe) caseString: 'upper' | 'lower' = 'lower',
+		@Query('case', ParseCasePipe) caseString: CreateShortLinkOptions['case'] = 'lower',
 		@Query('length', new DefaultValuePipe(10), new LimitPipe(6, 25))
 		length: number
 	): Promise<CreateLinkResponse> {
-		let path = await this.linkService.createShortLink(url, length);
-		path = caseString == 'upper' ? path.toUpperCase() : path;
+		const linkModel = await this.linkService.createShortLink(url, email, { length, case: caseString });
 		const domain = this.configService.get('DOMAIN');
-
-		return { path, url: `${domain}/link/${path}` };
+		return { ...linkModel, shortUrl: `${domain}/link/${linkModel.path}` };
 	}
 
 	@Render('index')
 	@Get(':path')
-	redirect(@Param('path') path: string): GetTemplateResponse {
+	async redirect(@Param('path') path: string): Promise<Link> {
 		if (!path) {
 			throw new BadRequestException(LinkErrorMessages.NO_URL);
 		}
-		return { url: this.linkService.getUrlByPath(path) };
+		return this.linkService.getUrlByPath(path);
 	}
 }
