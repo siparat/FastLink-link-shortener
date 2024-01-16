@@ -11,6 +11,17 @@ datasource db {
 }
 
 model User {
-    id    String @id @default(uuid())
-    email String
+    id       String @id @default(uuid())
+    nickname String @unique
+    email    String @unique
+    password String
+    Link     Link[]
+}
+
+model Link {
+    id       String @id @default(uuid())
+    path     String @unique
+    url      String
+    authorId String
+    author   User   @relation(references: [id], fields: [authorId])
 }
