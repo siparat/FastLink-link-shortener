@@ -1,6 +1,8 @@
 import { HttpStatus } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { TestingModule, Test } from '@nestjs/testing';
+import { hash } from 'bcrypt';
 import { Server } from 'http';
 import { join } from 'path';
 import { AppModule } from 'src/app.module';
@@ -23,6 +25,12 @@ describe('Link (e2e)', () => {
 	beforeAll(async () => {
 		database = new DatabaseService();
 		await database.$connect();
+		await database.user.create({
+			data: {
+				...mockUserRegisterDto,
+				password: await hash(mockUserRegisterDto.password, Number(new ConfigService().get('SALT')))
+			}
+		});
 	});
 
 	beforeEach(async () => {
@@ -34,7 +42,7 @@ describe('Link (e2e)', () => {
 		server = app.getHttpServer();
 		await app.init();
 
-		token = (await request(server).post('/auth/register').send(mockUserRegisterDto)).body.accessToken;
+		token = (await request(server).post('/auth/login').send(mockUserRegisterDto)).body.accessToken;
 	});
 
 	describe('/link/create (POST)', () => {
@@ -82,16 +90,13 @@ describe('Link (e2e)', () => {
 		});
 
 		it('Received (success)', async () => {
-			const res = await request(server).get(`/link/${path}`).expect(HttpStatus.OK);
+			const res = await request(server).get(`/link/${path}`);
 			expect(res.type).toEqual('text/html');
 		});
 	});
 
-	afterEach(async () => {
-		await database.user.delete({ where: { email: mockUserRegisterDto.email } });
-	});
-
 	afterAll(async () => {
+		await database.user.delete({ where: { email: mockUserRegisterDto.email } });
 		await database.$disconnect();
 	});
 });

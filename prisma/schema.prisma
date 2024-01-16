@@ -23,5 +23,5 @@ model Link {
     path     String @unique
     url      String
     authorId String
-    author   User   @relation(references: [id], fields: [authorId])
+    author   User   @relation(references: [id], fields: [authorId], onDelete: Cascade)
 }
