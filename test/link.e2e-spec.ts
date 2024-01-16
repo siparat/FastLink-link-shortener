@@ -4,14 +4,14 @@ import { TestingModule, Test } from '@nestjs/testing';
 import { Server } from 'http';
 import { join } from 'path';
 import { AppModule } from 'src/app.module';
-import { AuthDto } from 'src/auth/dto/auth.dto';
+import { AuthRegisterDto } from 'src/auth/dto/auth-register.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { LinkErrorMessages } from 'src/link/link.constants';
 import * as request from 'supertest';
 
 const mockUrl = 'https://kinmov.ru';
 
-const mockUserDto: AuthDto = { email: 'mock@email.ru' };
+const mockUserRegisterDto: AuthRegisterDto = { email: 'mock@email.ru', nickname: 'mock', password: '11223344' };
 
 describe('Link (e2e)', () => {
 	let app: NestExpressApplication;
@@ -23,7 +23,6 @@ describe('Link (e2e)', () => {
 	beforeAll(async () => {
 		database = new DatabaseService();
 		await database.$connect();
-		await database.user.create({ data: mockUserDto });
 	});
 
 	beforeEach(async () => {
@@ -31,11 +30,11 @@ describe('Link (e2e)', () => {
 			imports: [AppModule]
 		}).compile();
 		app = moduleRef.createNestApplication();
-		app.setBaseViewsDir(join(process.cwd(), './src/', './templates'));
-		app.setViewEngine('hbs');
+		app.setBaseViewsDir(join(process.cwd(), './src/', './templates')).setViewEngine('hbs');
 		server = app.getHttpServer();
 		await app.init();
-		token = (await request(server).post('/auth/login').send(mockUserDto)).body.accessToken;
+
+		token = (await request(server).post('/auth/register').send(mockUserRegisterDto)).body.accessToken;
 	});
 
 	describe('/link/create (POST)', () => {
@@ -88,8 +87,11 @@ describe('Link (e2e)', () => {
 		});
 	});
 
+	afterEach(async () => {
+		await database.user.delete({ where: { email: mockUserRegisterDto.email } });
+	});
+
 	afterAll(async () => {
-		await database.user.deleteMany({ where: { email: mockUserDto.email } });
 		await database.$disconnect();
 	});
 });
