@@ -45,10 +45,10 @@ describe('Link (e2e)', () => {
 		token = (await request(server).post('/auth/login').send(mockUserRegisterDto)).body.accessToken;
 	});
 
-	describe('/link/create (POST)', () => {
+	describe('/create (POST)', () => {
 		it('No url (fail)', async () => {
 			const res = await request(server)
-				.post('/link/create')
+				.post('/create')
 				.set('Authorization', 'Bearer ' + token)
 				.expect(HttpStatus.BAD_REQUEST);
 			expect(res.body.message).toEqual(LinkErrorMessages.NO_URL);
@@ -56,7 +56,7 @@ describe('Link (e2e)', () => {
 
 		it('Bad url (fail)', async () => {
 			const res = await request(server)
-				.post('/link/create?url=mock')
+				.post('/create?url=mock')
 				.set('Authorization', 'Bearer ' + token)
 				.expect(HttpStatus.BAD_REQUEST);
 			expect(res.body.message).toEqual(LinkErrorMessages.BAD_URL);
@@ -64,33 +64,33 @@ describe('Link (e2e)', () => {
 
 		it('Bad case type (fail)', async () => {
 			const res = await request(server)
-				.post(`/link/create?url=${mockUrl}&case=uper`)
+				.post(`/create?url=${mockUrl}&case=uper`)
 				.set('Authorization', 'Bearer ' + token)
 				.expect(HttpStatus.BAD_REQUEST);
 			expect(res.body.message).toEqual(LinkErrorMessages.BAD_CASE_TYPE);
 		});
 
 		it('Unauthorized (fail)', () => {
-			return request(server).post(`/link/create?url=${mockUrl}`).expect(HttpStatus.UNAUTHORIZED);
+			return request(server).post(`/create?url=${mockUrl}`).expect(HttpStatus.UNAUTHORIZED);
 		});
 
 		it('Created (success)', async () => {
 			const res = await request(server)
-				.post(`/link/create?url=${mockUrl}`)
+				.post(`/create?url=${mockUrl}`)
 				.set('Authorization', 'Bearer ' + token)
 				.expect(HttpStatus.CREATED);
 			path = res.body.path;
 		});
 	});
 
-	describe('/link/:path (GET)', () => {
+	describe('/:path (GET)', () => {
 		it('Not found', async () => {
-			const res = await request(server).get('/link/mock').expect(HttpStatus.OK);
+			const res = await request(server).get('/mock').expect(HttpStatus.OK);
 			expect(res.text).toContain(LinkErrorMessages.NOT_FOUND_BY_PATH);
 		});
 
 		it('Received (success)', async () => {
-			const res = await request(server).get(`/link/${path}`);
+			const res = await request(server).get(`/${path}`);
 			expect(res.type).toEqual('text/html');
 		});
 	});

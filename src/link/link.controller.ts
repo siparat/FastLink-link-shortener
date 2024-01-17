@@ -15,7 +15,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserEmail } from 'src/auth/decorators/user-email.decorator';
 import { CreateShortLinkOptions } from './link.interfaces';
 
-@Controller('link')
+@Controller('')
 export class LinkController {
 	constructor(
 		private linkService: LinkService,
@@ -33,7 +33,7 @@ export class LinkController {
 	): Promise<CreateLinkResponse> {
 		const linkModel = await this.linkService.createShortLink(url, email, { length, case: caseString });
 		const domain = this.configService.get('DOMAIN');
-		return { ...linkModel, shortUrl: `${domain}/link/${linkModel.path}` };
+		return { ...linkModel, shortUrl: `${domain}/${linkModel.path}` };
 	}
 
 	@Render('index')
