@@ -4,7 +4,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Переход по короткой ссылке | FastLink</title>
+	<title>
+		{{#if isSuccess}}
+		Переход по короткой ссылке | FastLink
+		{{else}}
+		{{ message }}
+		{{/if}}
+	</title>
 	<link rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF8xMDhfMTAxNSkiPgo8cGF0aCBkPSJNMTgzLjkgMTYuMUMxNjIuNSAtNS4zMDAwMSAxMjcuNyAtNS4zMDAwMSAxMDYuMyAxNi4xTDgyLjIgNDAuMUM5Mi45IDM5LjEgMTAzLjcgNDAuNCAxMTMuOSA0NC4yTDEyNC4yIDMzLjlDMTM1LjcgMjIuNCAxNTQuNSAyMi40IDE2Ni4xIDMzLjlDMTc3LjYgNDUuNCAxNzcuNiA2NC4yIDE2Ni4xIDc1LjhMMTMxLjggMTEwLjFDMTIwLjMgMTIxLjYgMTAxLjUgMTIxLjYgODkuOSAxMTAuMUM4Ni42IDEwNi44IDg0LjMgMTAzIDgyLjkgOTguOUM4MS43IDk5LjUgODAuNyAxMDAuMyA3OS43IDEwMS4zTDYzLjcgMTE3LjNDNjYgMTIxLjEgNjguNyAxMjQuNyA3MiAxMjhDOTMuNCAxNDkuNCAxMjguMiAxNDkuNCAxNDkuNiAxMjhMMTgzLjkgOTMuN0MyMDUuNCA3Mi4zIDIwNS40IDM3LjUgMTgzLjkgMTYuMVoiIGZpbGw9IiMxRjU3RTciLz4KPHBhdGggZD0iTTg2LjUgMTU1LjRMNzUuOCAxNjYuMUM2NC4zIDE3Ny42IDQ1LjUgMTc3LjYgMzMuOSAxNjYuMUMyMi40IDE1NC42IDIyLjQgMTM1LjggMzMuOSAxMjQuMkw2OC4yIDg5LjlDNzkuNyA3OC40IDk4LjUgNzguNCAxMTAuMSA4OS45QzExMy41IDkzLjMgMTE1LjkgOTcuMyAxMTcuMyAxMDEuNUMxMTguNSAxMDAuOSAxMTkuNyAxMDAgMTIwLjcgOTlMMTM2LjYgODMuMUMxMzQuMyA3OS4xIDEzMS40IDc1LjQgMTI4IDcyQzEwNi42IDUwLjYgNzEuOCA1MC42IDUwLjQgNzJMMTYuMSAxMDYuM0MtNS4zMDAwMSAxMjcuNyAtNS4zMDAwMSAxNjIuNSAxNi4xIDE4My45QzM3LjUgMjA1LjMgNzIuMyAyMDUuMyA5My43IDE4My45TDExOC40IDE1OS4yQzEwNy42IDE2MC40IDk2LjcgMTU5LjEgODYuNSAxNTUuNFoiIGZpbGw9IiMxRjU3RTciLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF8xMDhfMTAxNSI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,8 +113,13 @@
 <body>
 	<div class="container">
 		<h1>
+			{{#if isSuccess}}
 			Вы собираетесь перейти по ссылке
+			{{else}}
+			{{ message }}
+			{{/if}}
 		</h1>
+		{{#if isSuccess}}
 		<p title="{{ url }}">
 			{{ url }}
 		</p>
@@ -130,10 +141,14 @@
 				<p>Вернуться</p>
 			</button>
 		</div>
+		{{/if}}
 	</div>
+
+	{{#if isSuccess}}
 	<div class="info">
 		<p class="author">Пользователь: {{ author.nickname }}</p>
 	</div>
+	{{/if}}
 
 	<script>
 		document.getElementById('back').setAttribute('disabled', !window.navigation.canGoBack)

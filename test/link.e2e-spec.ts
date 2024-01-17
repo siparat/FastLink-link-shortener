@@ -85,8 +85,8 @@ describe('Link (e2e)', () => {
 
 	describe('/link/:path (GET)', () => {
 		it('Not found', async () => {
-			const res = await request(server).get('/link/mock').expect(HttpStatus.NOT_FOUND);
-			expect(res.body.message).toEqual(LinkErrorMessages.NOT_FOUND_BY_PATH);
+			const res = await request(server).get('/link/mock').expect(HttpStatus.OK);
+			expect(res.text).toContain(LinkErrorMessages.NOT_FOUND_BY_PATH);
 		});
 
 		it('Received (success)', async () => {

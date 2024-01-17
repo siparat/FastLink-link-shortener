@@ -1,15 +1,10 @@
+import { Controller, Post, Get, Query, Param, DefaultValuePipe, Render, UseGuards } from '@nestjs/common';
 import {
-	BadRequestException,
-	Controller,
-	Post,
-	Get,
-	Query,
-	Param,
-	DefaultValuePipe,
-	Render,
-	UseGuards
-} from '@nestjs/common';
-import { CreateLinkResponse } from './link.responses';
+	CreateLinkResponse,
+	ErrorRedirectLinkResponse,
+	WithStatusLinkResponse,
+	RedirectLinkResponse
+} from './link.responses';
 import { LinkService } from './link.service';
 import { ConfigService } from '@nestjs/config';
 import { LinkErrorMessages } from './link.constants';
@@ -17,7 +12,6 @@ import { LimitPipe } from 'src/pipes/limit.pipe';
 import { ParseUrlPipe } from './pipes/parse-url.pipe';
 import { ParseCasePipe } from './pipes/parse-case.pipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Link } from '@prisma/client';
 import { UserEmail } from 'src/auth/decorators/user-email.decorator';
 import { CreateShortLinkOptions } from './link.interfaces';
 
@@ -44,10 +38,13 @@ export class LinkController {
 
 	@Render('index')
 	@Get(':path')
-	async redirect(@Param('path') path: string): Promise<Link> {
-		if (!path) {
-			throw new BadRequestException(LinkErrorMessages.NO_URL);
+	async redirect(
+		@Param('path') path: string
+	): Promise<WithStatusLinkResponse<RedirectLinkResponse | ErrorRedirectLinkResponse>> {
+		const link = await this.linkService.getUrlByPath(path);
+		if (!path || !link) {
+			return { message: LinkErrorMessages.NOT_FOUND_BY_PATH, isSuccess: false };
 		}
-		return this.linkService.getUrlByPath(path);
+		return { ...link, isSuccess: true };
 	}
 }

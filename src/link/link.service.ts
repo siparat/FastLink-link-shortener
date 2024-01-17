@@ -5,6 +5,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { CreateShortLinkOptions } from './link.interfaces';
 import { ConfigService } from '@nestjs/config';
 import { Link } from '@prisma/client';
+import { RedirectLinkResponse } from './link.responses';
 
 @Injectable()
 export class LinkService {
@@ -13,15 +14,12 @@ export class LinkService {
 		private configService: ConfigService
 	) {}
 
-	async getUrlByPath(path: string): Promise<Link> {
+	async getUrlByPath(path: string): Promise<RedirectLinkResponse | null> {
 		const link = await this.database.link.findUnique({
 			where: { path },
 			include: { author: { select: { nickname: true } } }
 		});
-		if (!link) {
-			throw new NotFoundException(LinkErrorMessages.NOT_FOUND_BY_PATH);
-		}
-		return link;
+		return link ?? null;
 	}
 
 	async createShortLink(url: string, email: string, options: CreateShortLinkOptions): Promise<Link> {

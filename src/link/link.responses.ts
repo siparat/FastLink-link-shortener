@@ -1,3 +1,4 @@
+import { HttpException } from '@nestjs/common';
 import { Link } from '@prisma/client';
 
 export interface CreateLinkResponse extends Link {
@@ -5,5 +6,9 @@ export interface CreateLinkResponse extends Link {
 }
 
 export interface RedirectLinkResponse extends Link {
-	author: { username: string };
+	author: { nickname: string };
 }
+
+export interface ErrorRedirectLinkResponse extends Pick<HttpException, 'message'> {}
+
+export type WithStatusLinkResponse<T extends object> = T & { isSuccess: boolean };
