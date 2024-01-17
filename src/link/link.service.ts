@@ -14,12 +14,16 @@ export class LinkService {
 		private configService: ConfigService
 	) {}
 
-	async getUrlByPath(path: string): Promise<RedirectLinkResponse | null> {
+	async getUrlByPath(path: string, isVisited: boolean = true): Promise<RedirectLinkResponse | null> {
 		const link = await this.database.link.findUnique({
 			where: { path },
 			include: { author: { select: { nickname: true } } }
 		});
-		return link ?? null;
+		if (!link) {
+			return null;
+		}
+		!isVisited && (await this.database.link.update({ where: { path }, data: { count: { increment: 1 } } }));
+		return link;
 	}
 
 	async createShortLink(url: string, email: string, options: CreateShortLinkOptions): Promise<Link> {
