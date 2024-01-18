@@ -6,12 +6,14 @@ export const VisitedPaths = createParamDecorator((_: unknown, ctx: ExecutionCont
 	if (!req.headers.cookie) {
 		return [];
 	}
-	return req.headers.cookie
-		.split('; ')
-		.reduce<Record<string, string>>((acc, curr) => {
-			const [key, value] = curr.split('=');
-			acc[key] = value;
-			return acc;
-		}, {})
-		.visits.split('-');
+	return (
+		req.headers.cookie
+			.split('; ')
+			.reduce<Record<string, string>>((acc, curr) => {
+				const [key, value] = curr.split('=');
+				acc[key] = value;
+				return acc;
+			}, {})
+			.visits?.split('-') || []
+	);
 });

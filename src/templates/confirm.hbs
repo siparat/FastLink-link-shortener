@@ -61,7 +61,7 @@
 	{{/if}}
 
 	<script>
-		!window.navigation.canGoBack && document.getElementById('back').setAttribute('disabled')
+		!window.navigation.canGoBack && document.getElementById('back').setAttribute('disabled', 'true')
 		const onaccept = () => {
 			window.navigation.navigate('{{ url }}');
 		}
