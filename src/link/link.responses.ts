@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import { Link } from '@prisma/client';
+import { Link } from 'prisma/generated';
 
 export interface CreateLinkResponse extends Link {
 	shortUrl: string;

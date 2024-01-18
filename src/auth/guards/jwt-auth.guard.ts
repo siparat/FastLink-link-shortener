@@ -1,6 +1,6 @@
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '@prisma/client';
+import { User } from 'prisma/generated';
 import { AuthErrorMessages } from '../auth.constants';
 import { JsonWebTokenError } from '@nestjs/jwt';
 

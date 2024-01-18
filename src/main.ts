@@ -9,8 +9,8 @@ async function bootstrap(): Promise<void> {
 	app
 		.use(cookieParser())
 		.setViewEngine('hbs')
-		.useStaticAssets(join(process.cwd(), './src/', './templates/', './public'))
-		.setBaseViewsDir(join(process.cwd(), './src/', './templates'))
+		.useStaticAssets(join(__dirname, './templates/', './public'))
+		.setBaseViewsDir(join(__dirname, './templates'))
 		.enableCors({ credentials: true });
 	await app.listen(3000);
 }
