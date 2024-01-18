@@ -24,6 +24,10 @@ export class LinkController {
 		private configService: ConfigService
 	) {}
 
+	@Render('index')
+	@Get('')
+	getMainPage(): void {}
+
 	@UseGuards(JwtAuthGuard)
 	@Post('create')
 	async create(
@@ -38,7 +42,7 @@ export class LinkController {
 		return { ...linkModel, shortUrl: `${domain}/${linkModel.path}` };
 	}
 
-	@Render('index')
+	@Render('confirm')
 	@Get(':path')
 	async redirect(
 		@Res() res: Response,
