@@ -4,8 +4,8 @@ import { LinkErrorMessages } from './link.constants';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateShortLinkOptions } from './link.interfaces';
 import { ConfigService } from '@nestjs/config';
-import { Link } from '@prisma/client';
 import { RedirectLinkResponse } from './link.responses';
+import { Link } from 'prisma/generated';
 
 @Injectable()
 export class LinkService {
