@@ -5,163 +5,149 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>
-		{{#if isSuccess}}
 		Переход по короткой ссылке | FastLink
-		{{else}}
-		{{ message }}
-		{{/if}}
 	</title>
-	<link rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF8xMDhfMTAxNSkiPgo8cGF0aCBkPSJNMTgzLjkgMTYuMUMxNjIuNSAtNS4zMDAwMSAxMjcuNyAtNS4zMDAwMSAxMDYuMyAxNi4xTDgyLjIgNDAuMUM5Mi45IDM5LjEgMTAzLjcgNDAuNCAxMTMuOSA0NC4yTDEyNC4yIDMzLjlDMTM1LjcgMjIuNCAxNTQuNSAyMi40IDE2Ni4xIDMzLjlDMTc3LjYgNDUuNCAxNzcuNiA2NC4yIDE2Ni4xIDc1LjhMMTMxLjggMTEwLjFDMTIwLjMgMTIxLjYgMTAxLjUgMTIxLjYgODkuOSAxMTAuMUM4Ni42IDEwNi44IDg0LjMgMTAzIDgyLjkgOTguOUM4MS43IDk5LjUgODAuNyAxMDAuMyA3OS43IDEwMS4zTDYzLjcgMTE3LjNDNjYgMTIxLjEgNjguNyAxMjQuNyA3MiAxMjhDOTMuNCAxNDkuNCAxMjguMiAxNDkuNCAxNDkuNiAxMjhMMTgzLjkgOTMuN0MyMDUuNCA3Mi4zIDIwNS40IDM3LjUgMTgzLjkgMTYuMVoiIGZpbGw9IiMxRjU3RTciLz4KPHBhdGggZD0iTTg2LjUgMTU1LjRMNzUuOCAxNjYuMUM2NC4zIDE3Ny42IDQ1LjUgMTc3LjYgMzMuOSAxNjYuMUMyMi40IDE1NC42IDIyLjQgMTM1LjggMzMuOSAxMjQuMkw2OC4yIDg5LjlDNzkuNyA3OC40IDk4LjUgNzguNCAxMTAuMSA4OS45QzExMy41IDkzLjMgMTE1LjkgOTcuMyAxMTcuMyAxMDEuNUMxMTguNSAxMDAuOSAxMTkuNyAxMDAgMTIwLjcgOTlMMTM2LjYgODMuMUMxMzQuMyA3OS4xIDEzMS40IDc1LjQgMTI4IDcyQzEwNi42IDUwLjYgNzEuOCA1MC42IDUwLjQgNzJMMTYuMSAxMDYuM0MtNS4zMDAwMSAxMjcuNyAtNS4zMDAwMSAxNjIuNSAxNi4xIDE4My45QzM3LjUgMjA1LjMgNzIuMyAyMDUuMyA5My43IDE4My45TDExOC40IDE1OS4yQzEwNy42IDE2MC40IDk2LjcgMTU5LjEgODYuNSAxNTUuNFoiIGZpbGw9IiMxRjU3RTciLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF8xMDhfMTAxNSI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=">
+	<link rel="shortcut icon"
+		href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF8xMDhfMTAxNSkiPgo8cGF0aCBkPSJNMTgzLjkgMTYuMUMxNjIuNSAtNS4zMDAwMSAxMjcuNyAtNS4zMDAwMSAxMDYuMyAxNi4xTDgyLjIgNDAuMUM5Mi45IDM5LjEgMTAzLjcgNDAuNCAxMTMuOSA0NC4yTDEyNC4yIDMzLjlDMTM1LjcgMjIuNCAxNTQuNSAyMi40IDE2Ni4xIDMzLjlDMTc3LjYgNDUuNCAxNzcuNiA2NC4yIDE2Ni4xIDc1LjhMMTMxLjggMTEwLjFDMTIwLjMgMTIxLjYgMTAxLjUgMTIxLjYgODkuOSAxMTAuMUM4Ni42IDEwNi44IDg0LjMgMTAzIDgyLjkgOTguOUM4MS43IDk5LjUgODAuNyAxMDAuMyA3OS43IDEwMS4zTDYzLjcgMTE3LjNDNjYgMTIxLjEgNjguNyAxMjQuNyA3MiAxMjhDOTMuNCAxNDkuNCAxMjguMiAxNDkuNCAxNDkuNiAxMjhMMTgzLjkgOTMuN0MyMDUuNCA3Mi4zIDIwNS40IDM3LjUgMTgzLjkgMTYuMVoiIGZpbGw9IiMxRjU3RTciLz4KPHBhdGggZD0iTTg2LjUgMTU1LjRMNzUuOCAxNjYuMUM2NC4zIDE3Ny42IDQ1LjUgMTc3LjYgMzMuOSAxNjYuMUMyMi40IDE1NC42IDIyLjQgMTM1LjggMzMuOSAxMjQuMkw2OC4yIDg5LjlDNzkuNyA3OC40IDk4LjUgNzguNCAxMTAuMSA4OS45QzExMy41IDkzLjMgMTE1LjkgOTcuMyAxMTcuMyAxMDEuNUMxMTguNSAxMDAuOSAxMTkuNyAxMDAgMTIwLjcgOTlMMTM2LjYgODMuMUMxMzQuMyA3OS4xIDEzMS40IDc1LjQgMTI4IDcyQzEwNi42IDUwLjYgNzEuOCA1MC42IDUwLjQgNzJMMTYuMSAxMDYuM0MtNS4zMDAwMSAxMjcuNyAtNS4zMDAwMSAxNjIuNSAxNi4xIDE4My45QzM3LjUgMjA1LjMgNzIuMyAyMDUuMyA5My43IDE4My45TDExOC40IDE1OS4yQzEwNy42IDE2MC40IDk2LjcgMTU5LjEgODYuNSAxNTUuNFoiIGZpbGw9IiMxRjU3RTciLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF8xMDhfMTAxNSI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-	<style>
-		html,
-		body,
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-			font-family: 'Rubik', sans-serif;
-		}
-
-		body {
-			background: url("/background.png");
-			background-repeat: no-repeat;
-			background-size: cover;
-			height: 100vh;
-			overflow: hidden;
-			justify-content: center;
-			align-items: center;
-			display: flex;
-			flex-direction: column;
-		}
-
-		.buttons {
-			margin-top: 45px;
-			display: flex;
-			gap: 51px;
-		}
-
-		.buttons button {
-			padding: 18px 50px;
-			border-radius: 20px;
-			display: flex;
-			gap: 10px;
-			align-items: center;
-			font-size: 16px;
-			border: none;
-			font-weight: 500;
-			line-height: 150%;
-			background: var(--color);
-			transition: .25s box-shadow ease;
-		}
-
-		.buttons button:focus {
-			outline: 2px solid #303239;
-		}
-
-		.buttons button:hover {
-			cursor: pointer;
-			box-shadow: 0px 0px 5px var(--color);
-		}
-
-		.buttons button p {
-			color: #FFFFFF;
-		}
-
-		.buttons button[disabled=true] {
-			filter: opacity(0.6);
-			cursor: not-allowed;
-			box-shadow: none;
-		}
-
-		.container h1 {
-			color: #303239;
-			font-size: 30px;
-			font-weight: 700;
-			line-height: 150%;
-		}
-
-		.container p {
-			color: #3C3E46;
-			font-size: 24px;
-			font-weight: 500;
-			line-height: 150%;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			max-width: 550px;
-		}
-
-		.info {
-			display: flex;
-			justify-content: space-between;
-			max-width: 1200px;
-			padding-inline: 20px;
-			width: 100%;
-			position: absolute;
-			bottom: 33px;
-			font-size: 16px;
-			font-weight: 400;
-			line-height: 150%;
-			color: #BEBEBE
-		}
-	</style>
+	<link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
 	<div class="container">
 		<h1>
-			{{#if isSuccess}}
-			Вы собираетесь перейти по ссылке
-			{{else}}
-			{{ message }}
-			{{/if}}
+			FastLink – Сокращатель ссылок
 		</h1>
-		{{#if isSuccess}}
-		<p title="{{ url }}">
-			{{ url }}
-		</p>
-		<div class="buttons">
-			<button onclick="onaccept()" style="--color:#2F69FE">
-				<svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-					<path
-						d="M21.6854 2.58198C21.1852 2.0686 20.4449 1.87734 19.7546 2.07866L3.658 6.75952C2.9297 6.96186 2.41349 7.54269 2.27443 8.28055C2.13237 9.0315 2.62858 9.98479 3.27684 10.3834L8.3099 13.4768C8.82611 13.7939 9.49239 13.7144 9.91956 13.2835L15.6829 7.4843C15.973 7.18231 16.4532 7.18231 16.7434 7.4843C17.0335 7.77623 17.0335 8.24935 16.7434 8.55134L10.97 14.3516C10.5418 14.7814 10.4618 15.4508 10.7769 15.9702L13.8522 21.0538C14.2123 21.6577 14.8326 22 15.5128 22C15.5929 22 15.6829 22 15.763 21.9899C16.5433 21.8893 17.1635 21.3558 17.3936 20.6008L22.1656 4.52479C22.3757 3.84028 22.1856 3.09537 21.6854 2.58198"
-						fill="white" />
-				</svg>
-				<p>Перейти</p>
+		<div id="auth" class="buttons">
+			<button data-modal-id="register" style="--color: #2F69FE">
+				<p class="p_medium">Регистрация</p>
 			</button>
-			<button id="back" onclick="onback()" style="--color:#F24E1E">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16" fill="none">
-					<path
-						d="M18.0627 9C18.615 9 19.0627 8.55228 19.0627 8C19.0627 7.44772 18.615 7 18.0627 7V9ZM0.730271 7.29289C0.339747 7.68342 0.339747 8.31658 0.730271 8.70711L7.09423 15.0711C7.48476 15.4616 8.11792 15.4616 8.50845 15.0711C8.89897 14.6805 8.89897 14.0474 8.50845 13.6569L2.85159 8L8.50845 2.34315C8.89897 1.95262 8.89897 1.31946 8.50845 0.928932C8.11792 0.538408 7.48476 0.538408 7.09423 0.928932L0.730271 7.29289ZM18.0627 7H1.43738V9H18.0627V7Z"
-						fill="white" />
-				</svg>
-				<p>Вернуться</p>
+			<button data-modal-id="login" class="transparent" style="--color: #2F69FE">
+				<p class="p_medium">Вход</p>
 			</button>
 		</div>
-		{{/if}}
-	</div>
+		<div class="hidden" id="main">
+			<form action="/create" class="form">
+				<input name="url" placeholder="Ссылка" type="text">
+				<div class="length">
+					<div class="length__wrapper">
+						<p class="p_small">Длина строки</p>
+						<p id="length__count" class="p_small">6</p>
+					</div>
+					<input name="length" value="6" min="6" max="25" type="range">
+				</div>
+				<p id="result" class="p_medium hidden"></p>
+				<p id="info" class="p_small hidden">Ссылка скопирована в буфер обмена</p>
+				<p class="p_small error"></p>
+				<button type="button" class="short" style="--color: #2F69FE">
+					<p class="p_medium">Сократить</p>
+				</button>
+			</form>
+		</div>
 
-	{{#if isSuccess}}
-	<div class="info">
-		<p class="author">Пользователь: {{ author.nickname }}</p>
-		<p class="author">Переходов по ссылке: {{ count }}</p>
+		<dialog id="register" class="modal">
+			<div class="modal__block">
+				<h1>Регистрация</h1>
+				<form action="/auth/register" class="form">
+					<input placeholder="Почта" name="email" type="email">
+					<input placeholder="Никнейм" name="nickname" type="text">
+					<input placeholder="Пароль" name="password" type="password">
+					<button class="short" style="--color: #2F69FE">
+						<p class="p_small">Регистрация</p>
+					</button>
+					<p class="p_small error"></p>
+				</form>
+			</div>
+		</dialog>
+
+		<dialog id="login" class="modal">
+			<div class="modal__block">
+				<h1>Вход</h1>
+				<form action="/auth/login" class="form">
+					<input placeholder="Почта" name="email" type="email">
+					<input placeholder="Пароль" name="password" type="password">
+					<button class="short" style="--color: #2F69FE">
+						<p class="p_small">Вход</p>
+					</button>
+					<p class="p_small error"></p>
+				</form>
+			</div>
+		</dialog>
 	</div>
-	{{/if}}
 
 	<script>
-		document.getElementById('back').setAttribute('disabled', !window.navigation.canGoBack)
-		const onaccept = () => {
-			window.navigation.navigate('{{ url }}');
+		const rangeCount = document.getElementById('length__count');
+		const mainForm = document.querySelector('#main form');
+
+		const getBody = (target) => {
+			return new FormData(target).entries().reduce((acc, curr) => {
+				acc[curr[0]] = curr[1]
+				return acc
+			}, {})
 		}
-		const onback = () => {
-			window.navigation.back();
-		}
+
+		const isError = (obj) => 'message' in obj && 'statusCode' in obj
+
+		const connectAuthToken = (headers) => ({...headers, Authorization: `Bearer ${localStorage.getItem('accessToken')}`})
+
 		window.addEventListener('load', () => {
-			(window.innerWidth < 600 || window.innerHeight < 350) && onaccept()
+			if (!localStorage.getItem('accessToken')) {
+				return;
+			}
+			document.getElementById('auth').classList.add('hidden')
+			document.getElementById('main').classList.remove('hidden')
 		})
+
+		document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', (e) => {
+			e.target == e.currentTarget && e.currentTarget.close();
+		}))
+
+		document.querySelectorAll('.buttons button').forEach(btn => {
+			btn.addEventListener('click', (e) => document.querySelector(`dialog#${e.currentTarget.getAttribute('data-modal-id')}`).showModal())
+		})
+
+		document.querySelectorAll('dialog form').forEach(f => f.addEventListener('submit', async (e) => {
+			e.preventDefault()
+			const body = getBody(e.target)
+			const res = await fetch(e.target.action, { method: 'post', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+			const json = await res.json();
+			if (isError(json)) {
+				return e.target.querySelector('.error').innerText = Array.isArray(json.message) ? json.message[0] : json.message
+			}
+			localStorage.setItem('accessToken', json.accessToken)
+			window.navigation.reload()
+		}))
+
+		mainForm.addEventListener('submit', (e) => {
+			e.preventDefault()
+		})
+		
+		mainForm.querySelector('button').addEventListener('click', async (e) => {
+			e.preventDefault()
+			const errorElement = mainForm.querySelector('.error')
+			const resultElement = mainForm.querySelector('#result')
+			const infoElement = mainForm.querySelector('#info')
+			errorElement.innerText = ''
+			resultElement.classList.add('hidden')
+			infoElement.classList.add('hidden')
+			const queries = new URLSearchParams(new FormData(mainForm)).toString()
+			const res = await fetch(`${mainForm.action}?${queries}`, { method: 'post', headers: connectAuthToken() })
+			const json = await res.json();
+			if (isError(json)) {
+				return errorElement.innerText = json.message;
+			}
+			resultElement.classList.remove('hidden')
+			infoElement.classList.remove('hidden')
+			resultElement.innerText = json.shortUrl;
+			window.navigator.clipboard.writeText(json.shortUrl)
+		})
+
+		document.querySelector('input[type="range"]').addEventListener('input', (e) => {
+			rangeCount.innerText = e.target.value;
+		})
+
 	</script>
 </body>
 
