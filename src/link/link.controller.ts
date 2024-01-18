@@ -1,15 +1,10 @@
+import { Controller, Post, Get, Query, Param, DefaultValuePipe, Render, UseGuards, Res } from '@nestjs/common';
 import {
-	BadRequestException,
-	Controller,
-	Post,
-	Get,
-	Query,
-	Param,
-	DefaultValuePipe,
-	Render,
-	UseGuards
-} from '@nestjs/common';
-import { CreateLinkResponse } from './link.responses';
+	CreateLinkResponse,
+	ErrorRedirectLinkResponse,
+	WithStatusLinkResponse,
+	RedirectLinkResponse
+} from './link.responses';
 import { LinkService } from './link.service';
 import { ConfigService } from '@nestjs/config';
 import { LinkErrorMessages } from './link.constants';
@@ -17,16 +12,21 @@ import { LimitPipe } from 'src/pipes/limit.pipe';
 import { ParseUrlPipe } from './pipes/parse-url.pipe';
 import { ParseCasePipe } from './pipes/parse-case.pipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Link } from '@prisma/client';
 import { UserEmail } from 'src/auth/decorators/user-email.decorator';
 import { CreateShortLinkOptions } from './link.interfaces';
+import { VisitedPaths } from './decorators/visited-paths.decorator';
+import { Response } from 'express';
 
-@Controller('link')
+@Controller('')
 export class LinkController {
 	constructor(
 		private linkService: LinkService,
 		private configService: ConfigService
 	) {}
+
+	@Render('index')
+	@Get('')
+	getMainPage(): void {}
 
 	@UseGuards(JwtAuthGuard)
 	@Post('create')
@@ -39,15 +39,22 @@ export class LinkController {
 	): Promise<CreateLinkResponse> {
 		const linkModel = await this.linkService.createShortLink(url, email, { length, case: caseString });
 		const domain = this.configService.get('DOMAIN');
-		return { ...linkModel, shortUrl: `${domain}/link/${linkModel.path}` };
+		return { ...linkModel, shortUrl: `${domain}/${linkModel.path}` };
 	}
 
-	@Render('index')
+	@Render('confirm')
 	@Get(':path')
-	async redirect(@Param('path') path: string): Promise<Link> {
-		if (!path) {
-			throw new BadRequestException(LinkErrorMessages.NO_URL);
+	async redirect(
+		@Res() res: Response,
+		@VisitedPaths() visits: string[],
+		@Param('path') path: string
+	): Promise<WithStatusLinkResponse<RedirectLinkResponse | ErrorRedirectLinkResponse>> {
+		const isVisited = visits.includes(path);
+		const link = await this.linkService.getUrlByPath(path, isVisited);
+		if (!path || !link) {
+			return { message: LinkErrorMessages.NOT_FOUND_BY_PATH, isSuccess: false };
 		}
-		return this.linkService.getUrlByPath(path);
+		!isVisited && res.cookie('visits', visits.concat(path).join('-'), { maxAge: 1000 * 60 * 60 * 24 * 30 * 12 });
+		return { ...link, isSuccess: true };
 	}
 }
